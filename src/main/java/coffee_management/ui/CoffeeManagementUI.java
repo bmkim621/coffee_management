@@ -35,7 +35,6 @@ public class CoffeeManagementUI extends JFrame implements ActionListener {
 
 	//서비스
 	private CoffeeManagementService saleService;
-	private OutputService productService;
 	//버튼
 	private JButton btnInput;
 	private JButton btnSalePrice;
@@ -46,7 +45,6 @@ public class CoffeeManagementUI extends JFrame implements ActionListener {
 	 */
 	public CoffeeManagementUI() {
 		saleService = new CoffeeManagementService();
-		productService = new OutputService();
 		initComponents();
 	}
 
@@ -187,10 +185,110 @@ public class CoffeeManagementUI extends JFrame implements ActionListener {
 	//입력버튼 : 입력한 데이터들이 Sale 테이블에 저장된다.
 	protected void do_btnInput_actionPerformed(ActionEvent arg0) {
 		// 텍스트필드에 있는 값들을 들고와서 Sale에 저장.
-		Sale sale = getSale();
+		
 		int res;
 		
 		try {
+			//제품단가
+			if(tfPrice.getText().length() > 9) {
+				JOptionPane.showMessageDialog(null, "8자리 이내의 정수를 입력해주세요.");
+				tfPrice.setText("");
+				
+				try {
+					int price = Integer.parseInt(tfPrice.getText());
+					if(price <= 0) {
+						JOptionPane.showMessageDialog(null, "양수만 입력해주세요.");
+						return;
+					}
+					
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "정수를 입력해주세요.");
+					tfPrice.setText("");
+					
+					return;
+				}
+			}else {
+				try {
+					int price = Integer.parseInt(tfPrice.getText());
+					if(price <= 0) {
+						JOptionPane.showMessageDialog(null, "양수만 입력해주세요.");
+						return;
+					}
+					
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "정수를 입력해주세요.");
+					tfPrice.setText("");
+					
+					return;
+				}
+			}
+			
+			//판매수량
+			if(tfSaleCnt.getText().length() > 9) {
+				JOptionPane.showMessageDialog(null, "8자리 이내의 정수를 입력해주세요.");
+				tfSaleCnt.setText("");
+				
+				try {
+					int saleCnt = Integer.parseInt(tfSaleCnt.getText());
+					if(saleCnt <= 0) {
+						JOptionPane.showMessageDialog(null, "양수만 입력해주세요.");
+						return;
+					}
+					
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "정수를 입력해주세요.");
+					tfSaleCnt.setText("");
+					
+					return;
+				}
+			} else {
+				try {
+					int saleCnt = Integer.parseInt(tfSaleCnt.getText());
+					if(saleCnt <= 0) {
+						JOptionPane.showMessageDialog(null, "양수만 입력해주세요.");
+						return;
+					}
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "정수를 입력해주세요.");
+					tfSaleCnt.setText("");
+					
+					return;
+				}
+			}
+			
+			//마진율
+			if(tfMarginRate.getText().length() > 3) {
+				JOptionPane.showMessageDialog(null, "2자리 이내의 정수를 입력해주세요.");
+				tfMarginRate.setText("");
+				
+				try {
+					int marginRate = Integer.parseInt(tfPrice.getText());
+					
+					if(marginRate <= 0) {
+						JOptionPane.showMessageDialog(null, "양수만 입력해주세요.");
+						return;
+					}
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "정수를 입력해주세요.");
+					tfMarginRate.setText("");
+					
+					return;
+				}
+			} else {
+				try {
+					int marginRate = Integer.parseInt(tfMarginRate.getText());
+					
+					if(marginRate <= 0) {
+						JOptionPane.showMessageDialog(null, "양수만 입력해주세요.");
+						return;
+					}
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "정수를 입력해주세요.");
+					tfMarginRate.setText("");
+				}
+			}
+			
+			Sale sale = getSale();
 			res = saleService.registerSale(sale);
 			
 			if(res == 1) {
